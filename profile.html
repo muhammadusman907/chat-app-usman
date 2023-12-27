@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog App</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- ========================================================== -->
+    <!--=======================  navbar  ========================-->
+    <!--========================================================  -->
+    <nav class="relative select-none bg-red-500 lg:flex lg:items-stretch w-full">
+      <div class="flex flex-no-shrink items-stretch h-12">
+        <!-- <a href="#" class="flex-no-grow flex-no-shrink relative py-2 px-4 leading-normal text-white no-underline flex items-center hover:bg-grey-dark">Tailwind</a>
+        <a href="#" class="flex-no-grow flex-no-shrink relative py-2 px-4 leading-normal text-white no-underline flex items-center hover:bg-grey-dark">Css</a> -->
+        <button class="block lg:hidden cursor-pointer ml-auto relative w-12 h-12 p-4">
+          <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+          <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"/></svg>
+        </button>
+      </div>
+      <div class="lg:flex lg:items-stretch lg:flex-no-shrink lg:flex-grow">
+        <div  class="lg:flex lg:items-stretch lg:justify-end ml-auto">
+          <a href="./index.html" class="flex-no-grow flex-no-shrink relative py-2 px-4 leading-normal text-white no-underline flex items-center hover:bg-grey-dark">message</a>
+          <!-- <a href="#" class="flex-no-grow flex-no-shrink relative py-2 px-4 leading-normal text-white no-underline flex items-center hover:bg-grey-dark">Item 2</a> -->
+          <!-- <a href="#" class="flex-no-grow flex-no-shrink relative py-2 px-4 leading-normal text-white no-underline flex items-center hover:bg-grey-dark">Item 3</a> -->
+        </div>
+      </div>
+    </nav>
+<!--=================================********** loader ****************============================= -->
+<!-- component -->
+   <!-- ========================================================== -->
+    <!-- ========================== LOADER ======================== -->
+    <!-- ========================================================== -->
+    <div id="loader" class="hidden">
+        <div class="animate-spin fixed left-[50%] top-[45%] inline-block w-10 h-10 border-[3px] border-current border-t-transparent text-pink-600 rounded-full"
+            role="status" aria-label="loading">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+<!-- component -->
+
+<div class="flex justify-center items-center h-screen w-fll fixed left-[50%]" id="loader" style="display: none;" >
+  <div style="border-top-color:transparent"
+      class="w-16 h-16 border-4 border-red-400 border-double rounded-full animate-spin"></div>
+</div>
+<!-- component -->
+<div class="bg-gray-200 font-sans h-screen w-full flex flex-row justify-center items-center">
+    <div class="card w-96 mx-auto bg-white  shadow-xl hover:shadow">
+      <!-- =============================PROFILE IMAGE ======================= -->
+       <img class="w-32 h-32 object-cover mx-auto rounded-full -mt-20 border-3 border-white" id="profile-image" src="https://avatars.githubusercontent.com/u/67946056?v=4" alt="">
+       <div class="text-center mt-2 text-3xl font-medium" id="profile-user-name">Ajo Alex</div>
+       <div class="text-center mt-2 font-light text-sm" id="profile-email">@devpenzil</div>
+       <div class="text-center font-normal text-lg">Kerala</div>
+       <input type="file" id="profile-image-file">
+       <div class="px-6 text-center mt-2 font-light text-sm">
+         <p>
+           Front end Developer, avid reader. Love to take a long walk, swim
+         </p>
+       </div>
+       <hr class="mt-8">
+       <div class="flex p-4">
+         <div class="w-1/2 text-center">
+           <span class="font-bold">1.8 k</span> Followers
+         </div>
+         <div class="w-0 border border-gray-300">
+           
+         </div>
+         <div class="w-1/2 text-center">
+           <span class="font-bold">2.0 k</span> Following
+         </div>
+       </div>
+       <button id="update-profile-btn" class="inline-block w-full py-4 px-6 mb-6 text-center text-lg leading-6 text-white font-extrabold bg-red-800 hover:bg-red-900 border-3 border-indigo-900 shadow rounded transition duration-200" >
+        Update profile
+      </button>
+        <button class="inline-block w-full py-4 px-6 mb-6 text-center text-lg leading-6 text-white font-extrabold bg-red-800 hover:bg-red-900 border-3 border-indigo-900 shadow rounded transition duration-200" id="logout-btn">
+          Logout
+        </button>
+    </div>
+   
+  </div>
+  
+    <script src="./app.js" type="module"></script>
+</body>
+</html>
