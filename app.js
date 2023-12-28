@@ -297,6 +297,7 @@ let navbarImage = document.getElementById("navbar-image")
 let messageShow = document.getElementById("message-show")
 let messages = (userId) => {
     sender = userId ;
+    messageShow.innerHTML = "";
     console.log(userId);
     console.log(auth.currentUser.uid);
     let currentUserId = auth.currentUser.uid;
@@ -330,10 +331,7 @@ const unsubscribe = onSnapshot(q, (snapshot) => {
   <div class="flex justify-start mb-4">
 
     <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
-      at praesentium, aut ullam delectus odio error sit rem. Architecto
-      nulla doloribus laborum illo rem enim dolor odio saepe,
-      consequatur quas?
+     
     </div>
   </div>
     ` 
