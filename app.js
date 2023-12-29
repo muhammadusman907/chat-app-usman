@@ -1,7 +1,7 @@
 import {
     getAuth, createUserWithEmailAndPassword, auth, signInWithEmailAndPassword, onAuthStateChanged, signOut,
     db, getFirestore, collection, addDoc, doc, onSnapshot, setDoc, getDoc, updateDoc, getDocs,
-    query, where,
+    query, where, serverTimestamp,
     storage, ref, uploadBytesResumable, getDownloadURL
 } from "./firebase.js";
 // ==========================================================================
@@ -118,6 +118,8 @@ loginBtn && loginBtn.addEventListener("click", () => {
 // =================== PROFILE PAGE GET IDS ==================
 // ===========================================================
 let profileUsername = document.getElementById("profile-user-name");
+let messageUsername = document.getElementById("message-user-name");
+let messageUserImage = document.getElementById("message-user-image");
 let profileEmail = document.getElementById("profile-email");
 
 onAuthStateChanged(auth, async (user) => {
@@ -136,12 +138,15 @@ onAuthStateChanged(auth, async (user) => {
             if (location.pathname !== "/profile.html" && location.pathname !== "/index.html") {
                 location.href = "./profile.html";
             }
+            messageUsername.innerHTML = docSnap.data().user_name;
             //4: YA DATA FIRE STORE SA A RHA HA OR PROFILE PAR RENDER HO RAHA HAI
             if (location.pathname == "/profile.html") {
                 profileUsername.innerHTML = docSnap.data().user_name;
                 profileEmail.innerHTML = docSnap.data().user_email;
                 if (docSnap.data().photoUrl) {
                     profileImage.src = docSnap.data().photoUrl;
+                    messageUserImage.src = docSnap.data().user_name;
+
                 }
                 loader.style.display = "none";
             }
@@ -296,7 +301,7 @@ let navbarName = document.getElementById("navbar-name")
 let navbarImage = document.getElementById("navbar-image")
 let messageShow = document.getElementById("message-show")
 let messages = (userId) => {
-    sender = userId ;
+    sender = userId;
     messageShow.innerHTML = "";
     console.log(userId);
     console.log(auth.currentUser.uid);
@@ -310,34 +315,38 @@ let messages = (userId) => {
     }
     usersChatID = chatId;
     console.log(chatId);
-//    ============================== user name and email
-const unsub = onSnapshot(doc(db, "userData", userId), (doc) => {
-    console.log("Current data: ", doc.data());
-     navbarName.innerHTML =  doc.data().user_name ;
-     navbarImage.src = doc.data().photoUrl ;
-});
+    //    ============================== user name and email
+    const unsub = onSnapshot(doc(db, "userData", userId), (doc) => {
+        console.log("Current data: ", doc.data());
+        navbarName.innerHTML = doc.data().user_name;
+        navbarImage.src = doc.data().photoUrl;
+    });
     // ============================ get meassages 
- const q = query(collection(db, "messges"), where("current_user", "==", auth.currentUser.uid));
-const unsubscribe = onSnapshot(q, (snapshot) => {
-  snapshot.docChanges().forEach((change) => {
-    messageShow.innerHTML +=`
-    <div class="flex justify-end mb-4">
+    const q = query(collection(db, "messges"), where("usersChatID", "==", chatId));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            console.log(change.doc.data().current_user);
+            if (change.doc.data().current_user === auth.currentUser.uid) {
 
-    <div class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
-      ${change.doc.data().user_message}
-    </div>
-
-  </div>
-  <div class="flex justify-start mb-4">
-
-    <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
-     
-    </div>
-  </div>
-    ` 
-     console.log(change.doc.data());
-  });
-});
+                messageShow.innerHTML += `
+                 <div class="flex justify-end mb-4">
+                 <div class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
+                 ${change.doc.data().user_message}
+                 </div>
+                 </div>
+                 </div>
+                 `
+            } else {
+                messageShow.innerHTML += `
+                <div class="flex justify-start mb-4">
+                  <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                 ${change.doc.data().user_message}
+                 </div>
+                 </div>`
+            }
+            console.log(change.doc.data());
+        });
+    });
 
     // ChatId = userId
 }
@@ -351,16 +360,17 @@ messageInput.addEventListener("keypress", async () => {
     if (event.keyCode == "13") {
         console.log(usersChatID);
         console.log(auth.currentUser.uid);
-                // Add a new document with a generated id.
+        // Add a new document with a generated id.
         const docRef = await addDoc(collection(db, "messges"), {
-             usersChatID,
-             user_message : messageInput.value,
-             current_user: auth.currentUser.uid,
-            sender
-          });
-            console.log("Document written with ID: ", docRef.id);
-             console.log(messageInput.value);  
-             messageInput.value = "";
+            usersChatID,
+            user_message: messageInput.value,
+            current_user: auth.currentUser.uid,
+            sender,
+            timestamp: serverTimestamp()
+        });
+        console.log("Document written with ID: ", docRef.id);
+        console.log(messageInput.value);
+        messageInput.value = "";
     }
 })
 

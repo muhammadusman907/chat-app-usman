@@ -5,7 +5,7 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 // ==============================================================================
 // =================================== fire store =============================== 
-import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, getDoc , updateDoc, query, where , getDocs  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, getDoc , updateDoc, query, where , getDocs ,serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 // ================================  STORAGE
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 const firebaseConfig = {
@@ -28,5 +28,5 @@ export {
     auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut,
     db, getFirestore, collection, addDoc, doc, onSnapshot, setDoc, getDoc, updateDoc ,
     query, where,
-    getStorage, storage, ref, uploadBytesResumable, getDownloadURL, getDocs
+    getStorage, storage, ref, uploadBytesResumable, getDownloadURL, getDocs,serverTimestamp
 }
