@@ -1,7 +1,7 @@
 import {
     getAuth, createUserWithEmailAndPassword, auth, signInWithEmailAndPassword, onAuthStateChanged, signOut,
     db, getFirestore, collection, addDoc, doc, onSnapshot, setDoc, getDoc, updateDoc, getDocs,
-    query, where, serverTimestamp,
+    query, where, serverTimestamp, orderBy,
     storage, ref, uploadBytesResumable, getDownloadURL
 } from "./firebase.js";
 // ==========================================================================
@@ -138,14 +138,17 @@ onAuthStateChanged(auth, async (user) => {
             if (location.pathname !== "/profile.html" && location.pathname !== "/index.html") {
                 location.href = "./profile.html";
             }
-            messageUsername.innerHTML = docSnap.data().user_name;
+            if (location.pathname == "/index.html") {
+                messageUsername.innerHTML = docSnap.data().user_name;
+                messageUserImage.src = docSnap.data().photoUrl;
+            }
             //4: YA DATA FIRE STORE SA A RHA HA OR PROFILE PAR RENDER HO RAHA HAI
             if (location.pathname == "/profile.html") {
                 profileUsername.innerHTML = docSnap.data().user_name;
                 profileEmail.innerHTML = docSnap.data().user_email;
                 if (docSnap.data().photoUrl) {
                     profileImage.src = docSnap.data().photoUrl;
-                    messageUserImage.src = docSnap.data().user_name;
+
 
                 }
                 loader.style.display = "none";
@@ -269,6 +272,7 @@ let userAdd = document.getElementById("user-add");
 let getUser = async (userId) => {
     const q = query(collection(db, "userData"), where("user_id", "!=", userId));
     const querySnapshot = await getDocs(q);
+    loader.style.display = "none";
     querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
@@ -322,13 +326,15 @@ let messages = (userId) => {
         navbarImage.src = doc.data().photoUrl;
     });
     // ============================ get meassages 
-    const q = query(collection(db, "messges"), where("usersChatID", "==", chatId));
+    const q = query(collection(db, "messges"), where("usersChatID", "==", chatId), orderBy("timestamp"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
             console.log(change.doc.data().current_user);
-            if (change.doc.data().current_user === auth.currentUser.uid) {
+            if (change.type === "added") {
 
-                messageShow.innerHTML += `
+                if (change.doc.data().current_user === auth.currentUser.uid) {
+                    console.log(change);
+                    messageShow.innerHTML += `
                  <div class="flex justify-end mb-4">
                  <div class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
                  ${change.doc.data().user_message}
@@ -336,13 +342,14 @@ let messages = (userId) => {
                  </div>
                  </div>
                  `
-            } else {
-                messageShow.innerHTML += `
+                } else {
+                    messageShow.innerHTML += `
                 <div class="flex justify-start mb-4">
                   <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
                  ${change.doc.data().user_message}
                  </div>
                  </div>`
+                }
             }
             console.log(change.doc.data());
         });
@@ -356,7 +363,7 @@ let messages = (userId) => {
 
 let messageInput = document.getElementById("message-input");
 
-messageInput.addEventListener("keypress", async () => {
+messageInput && messageInput.addEventListener("keypress", async () => {
     if (event.keyCode == "13") {
         console.log(usersChatID);
         console.log(auth.currentUser.uid);
