@@ -243,7 +243,7 @@ let profileImageFunction = (file) => {
 // =============================================
 let updateProfileBtn = document.getElementById("update-profile-btn");
 updateProfileBtn && updateProfileBtn.addEventListener("click", async () => {
-    // console.log(profileImageFile.files.length);
+    console.log(profileImageFile);
     // console.log(auth.currentUser.uid);
     if (profileImageFile.files.length == 0) {
         alert("please select image")
@@ -293,7 +293,8 @@ let getUser = async (userId) => {
             <div class="text-lg font-semibold">${doc.data().user_email}</div>
             <span class="text-gray-500">Pick me at 9:00 Am</span>
             </div>
-            </div>`
+            </div>
+            `
 
         }
     });
@@ -331,7 +332,7 @@ let messages = (userId) => {
         snapshot.docChanges().forEach((change) => {
             console.log(change.doc.data().current_user);
             if (change.type === "added") {
-
+               messageShow.scrollTop ;
                 if (change.doc.data().current_user === auth.currentUser.uid) {
                     console.log(change);
                     messageShow.innerHTML += `
@@ -348,8 +349,10 @@ let messages = (userId) => {
                   <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
                  ${change.doc.data().user_message}
                  </div>
-                 </div>`
+                 </div>
+                 `
                 }
+                messageShow.scrollTop = messageShow.scrollHeight;
             }
             console.log(change.doc.data());
         });
