@@ -140,7 +140,11 @@ onAuthStateChanged(auth, async (user) => {
             }
             if (location.pathname == "/index.html") {
                 messageUsername.innerHTML = docSnap.data().user_name;
-                messageUserImage.src = docSnap.data().photoUrl;
+                if(docSnap.data().photoUrl){
+                    messageUserImage.src = docSnap.data().photoUrl;
+                }else{
+                    messageUserImage.src = "./public/user-icon.png";
+                }
             }
             //4: YA DATA FIRE STORE SA A RHA HA OR PROFILE PAR RENDER HO RAHA HAI
             if (location.pathname == "/profile.html") {
@@ -148,7 +152,9 @@ onAuthStateChanged(auth, async (user) => {
                 profileEmail.innerHTML = docSnap.data().user_email;
                 if (docSnap.data().photoUrl) {
                     profileImage.src = docSnap.data().photoUrl;
-
+                }
+                else{
+                    profileImage.src = "public/user_icon.png";
 
                 }
                 loader.style.display = "none";
@@ -306,8 +312,8 @@ let navbarName = document.getElementById("navbar-name")
 let navbarImage = document.getElementById("navbar-image")
 let messageShow = document.getElementById("message-show")
 let messages = (userId) => {
-    sender = userId;
-    messageShow.innerHTML = "";
+    sender = userId;  
+        messageShow.innerHTML = "";    
     console.log(userId);
     console.log(auth.currentUser.uid);
     let currentUserId = auth.currentUser.uid;
@@ -332,27 +338,30 @@ let messages = (userId) => {
         snapshot.docChanges().forEach((change) => {
             console.log(change.doc.data().current_user);
             if (change.type === "added") {
-               messageShow.scrollTop ;
+              
                 if (change.doc.data().current_user === auth.currentUser.uid) {
                     console.log(change);
-                    messageShow.innerHTML += `
-                 <div class="flex justify-end mb-4">
-                 <div class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
-                 ${change.doc.data().user_message}
-                 </div>
-                 </div>
-                 </div>
-                 `
-                } else {
-                    messageShow.innerHTML += `
-                <div class="flex justify-start mb-4">
-                  <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
-                 ${change.doc.data().user_message}
-                 </div>
-                 </div>
-                 `
-                }
-                messageShow.scrollTop = messageShow.scrollHeight;
+                    
+                        console.log(messageShow)
+                        messageShow.innerHTML += `
+                        <div class="flex justify-end mb-4">
+                        <div class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
+                        ${change.doc.data().user_message}
+                        </div>
+                        </div>
+                        </div>
+                        `
+                    } else {
+                        messageShow.innerHTML += `
+                        <div class="flex justify-start mb-4">
+                        <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                        ${change.doc.data().user_message}
+                        </div>
+                        </div>
+                        `
+                    }
+                    messageShow.scrollTop = messageShow.scrollHeight;
+                
             }
             console.log(change.doc.data());
         });
