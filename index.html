@@ -24,14 +24,15 @@
 
   <div class="container h-screen mx-auto shadow-lg rounded-lg">
     <!-- headaer -->
-    <div class="px-5 py-5 flex justify-between items-center bg-white border-b-2">
+    <div class="px-5 py-5 flex justify-around items-center bg-white border-b-2">
       <div id="message-user-name" class="font-semibold text-2xl">GoingChat</div>
       <div class="w-1/2">
       </div>
-      <div class="h-12 w-12 rounded-full ">
+
+      <span class="h-12 w-12 rounded-full flex">
         <img class="w-full h-full object-cover rounded-full" id="message-user-image" src="public/user_icon.png" alt="">
-      </div>
-      <a href="./profile.html">Profile</a>
+        <a href="./profile.html" class="pt-3 ps-2">Profile</a>
+      </span>
     </div>
     <!-- end header -->
     <!-- Chatting -->
@@ -57,12 +58,13 @@
             </div>
             <!-- <div -->
             <!-- class=" p-2 h-[50px] w-[50px]  rounded-full"> -->
-            <img id="navbar-image" class="object-cover h-[50px] w-[50px] rounded-[50%]" src="public/user_icon.png" alt="">
+            <img id="navbar-image" class="object-cover h-[50px] w-[50px] rounded-[50%]" src="public/user_icon.png"
+              alt="">
             <!-- </div> -->
           </div>
           <!--================ messages show =================-->
         </div>
-        <div class="py-5 fixed w-[60%] bottom-0" >
+        <div class="py-5 fixed w-[60%] bottom-0">
           <div class="h-[300px] overflow-y-scroll " id="message-show">
 
           </div>

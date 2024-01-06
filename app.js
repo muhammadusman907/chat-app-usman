@@ -142,8 +142,6 @@ onAuthStateChanged(auth, async (user) => {
                 messageUsername.innerHTML = docSnap.data().user_name;
                 if(docSnap.data().photoUrl){
                     messageUserImage.src = docSnap.data().photoUrl;
-                }else{
-                    messageUserImage.src = "./public/user-icon.png";
                 }
             }
             //4: YA DATA FIRE STORE SA A RHA HA OR PROFILE PAR RENDER HO RAHA HAI
