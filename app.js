@@ -284,11 +284,13 @@ let getUser = async (userId) => {
 
             userAdd.innerHTML += `
             <div
-            class="flex flex-row py-4 px-2 justify-center items-center border-b-2"
+            class=" cursor-pointer flex flex-row py-4 px-2 justify-center items-center border-b-2"
               onclick="messages('${doc.data().user_id}')" >
             <div class="w-1/4">
             <img
-            src="${doc.data().photoUrl}"
+            src="${
+              doc.data().photoUrl ? doc.data().photoUrl : "public/user_icon.png"
+            }"
             class="object-cover h-12 w-12 rounded-full"
             alt=""
             />
@@ -298,7 +300,7 @@ let getUser = async (userId) => {
             <span class="text-gray-500">Pick me at 9:00 Am</span>
             </div>
             </div>
-            `
+            `;
 
         }
     });
@@ -327,8 +329,10 @@ let messages = (userId) => {
     //    ============================== user name and email
     const unsub = onSnapshot(doc(db, "userData", userId), (doc) => {
         console.log("Current data: ", doc.data());
-        navbarName.innerHTML = doc.data().user_name;
-        navbarImage.src = doc.data().photoUrl;
+        navbarName.innerHTML = doc.data().user_name ;
+        navbarImage.src = doc.data().photoUrl
+          ? doc.data().photoUrl
+          : "public/user_icon.png";
     });
     // ============================ get meassages 
     const q = query(collection(db, "messges"), where("usersChatID", "==", chatId), orderBy("timestamp"));
